@@ -1,8 +1,21 @@
 language: c
 sudo: false
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+    env:
+      - GCC7="CC=gcc-7 && CXX=g++-7"
+    
+before_install:
+  - eval "${GCC7}"
+
 script:
-  - gcc -lcrypt ecb-des.c -o ecb-des
-    #  - ./ecb-des -e "some text to encrypt" > secretfile
-    #  - ./ecb-des -d "`cat secretfile`"
+  - $CC -lcrypt ecb-des.c -o ecb-des
+  - ./ecb-des -e "some text to encrypt" > secretfile
+  - ./ecb-des -d "`cat secretfile`"
 
 

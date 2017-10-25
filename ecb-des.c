@@ -11,8 +11,27 @@ int main(int argc, char *argv[])
     char bin_input[32][64];
     struct crypt_data data;
     data.initialized = 0;
-    
-    //TODO: handle all command line arguments properly
+    int DEC_FLAG;
+
+    // handle all command line arguments properly
+    // TODO: print more detailed help
+    if(argc != 3)
+    {
+        printf("Invalid arguments.\nUsage: ecb-des [-e | -d] [<input_text>]\n");
+        exit(1);
+    }
+    else
+    {
+        if(!strcmp(argv[1], "-e"))
+            DEC_FLAG = 0;
+        else if(!strcmp(argv[1], "-d"))
+            DEC_FLAG = 1;
+        else
+        {
+            printf("%s is not a valid option.\n", argv[1]);
+            exit(1);
+        }
+    }
     strcpy(input, argv[2]);
     
     //TODO: parallelize this 

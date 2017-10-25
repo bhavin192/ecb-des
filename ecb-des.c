@@ -4,6 +4,12 @@
 #include <string.h>
 #include <stdlib.h> 
 
+void print_characters(char *array, int size)
+{
+    for(int i = 0; i < size; i++)
+        printf("%c", array[i]);
+}
+
 int main(int argc, char *argv[])
 {
     char key[64];
@@ -64,6 +70,10 @@ int main(int argc, char *argv[])
             for(int k = 0; k < 8; k++)
                 divided_input[i][j] |= bin_input[i][j * 8 + k] << k;
         }
+    
+    // print encrypted/decrypted message
+    for(int i = 0; i < 32; i++)
+        print_characters(divided_input[i], 8);
 
     return 0;
 }

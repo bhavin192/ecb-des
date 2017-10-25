@@ -1,5 +1,7 @@
 # ecb-des
 
+[![Build Status](https://travis-ci.org/geeksocket/ecb-des.svg?branch=master)](https://travis-ci.org/geeksocket/ecb-des) ![stability-experimental](https://img.shields.io/badge/stability-experimental-orange.svg) 
+
 Command line tool in C (OpenMP) for Electronic Codebook block cipher using DES
 
 ### How to build

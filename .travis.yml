@@ -12,6 +12,7 @@ addons:
     
 before_install:
   - eval "${GCC7}"
+  - $CC --version
 
 script:
   - $CC -lcrypt ecb-des.c -o ecb-des

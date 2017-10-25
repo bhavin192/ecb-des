@@ -1,0 +1,8 @@
+language: c
+sudo: false
+script:
+  - gcc -lcrypt ecb-des.c -o ecb-des
+    #  - ./ecb-des -e "some text to encrypt" > secretfile
+    #  - ./ecb-des -d "`cat secretfile`"
+
+

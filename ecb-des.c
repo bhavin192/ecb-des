@@ -46,17 +46,25 @@ int main(int argc, char *argv[])
             for(int k = 0; k < 8; k++)
                 bin_input[i][j * 8 + k] = divided_input[i][j] >> k & 1;
 
-    //TODO: generate readable random key 
-    /*
+    //TODO: generate readable random key
     for(int i = 0; i < 64; i++)
-        key[i] = rand() & 1;
-    */    
+        key[i] = 1; //rand() & 1; dummy key
+        
     
-    //TODO: encrypt all blocks 
-    //setkey_r(key, &data);
-    
-    //TODO: convert the bit arrays to readable form 
-    
+    // encrypt all blocks 
+    setkey_r(key, &data);
+    for(int i = 0; i < 32; i++)
+        encrypt_r(bin_input[i], DEC_FLAG, &data);
+
+    // convert the bit arrays to readable form 
+    for(int i = 0; i < 32; i++)
+        for(int j = 0; j < 8; j++)
+        {
+            divided_input[i][j] = '\0';
+            for(int k = 0; k < 8; k++)
+                divided_input[i][j] |= bin_input[i][j * 8 + k] << k;
+        }
+
     return 0;
 }
 

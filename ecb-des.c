@@ -20,8 +20,12 @@ int main(int argc, char *argv[])
         for(int j = 0; j < 8; j++)
             divided_input[i][j] = input[i * 8 + j];
     
-    //TODO: convert all arrays to bit form 
-    
+    // convert all arrays to bit form 
+    for(int i = 0; i < 32; i++)
+        for(int j = 0; j < 8; j++)
+            for(int k = 0; k < 8; k++)
+                bin_input[i][j * 8 + k] = divided_input[i][j] >> k & 1;
+
     //TODO: generate readable random key 
     /*
     for(int i = 0; i < 64; i++)

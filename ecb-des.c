@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> 
+#include <omp.h>
+#define OMP_THREADS 4
 
 void print_characters(char *array, int size)
 {
@@ -40,37 +42,44 @@ int main(int argc, char *argv[])
         }
     }
     strcpy(input, argv[2]);
-    
-    //TODO: parallelize this 
-    for(int i = 0; i < 32; i++)
-        for(int j = 0; j < 8; j++)
-            divided_input[i][j] = input[i * 8 + j];
-    
-    // convert all arrays to bit form 
-    for(int i = 0; i < 32; i++)
-        for(int j = 0; j < 8; j++)
-            for(int k = 0; k < 8; k++)
-                bin_input[i][j * 8 + k] = divided_input[i][j] >> k & 1;
 
-    //TODO: generate readable random key
-    for(int i = 0; i < 64; i++)
-        key[i] = 1; //rand() & 1; dummy key
+#pragma omp parallel num_threads(OMP_THREADS)
+    {
+#pragma omp for
+        for(int i = 0; i < 32; i++)
+            for(int j = 0; j < 8; j++)
+                    divided_input[i][j] = input[i * 8 + j];
+            
+        // convert all arrays to bit form 
+#pragma omp for
+        for(int i = 0; i < 32; i++)
+            for(int j = 0; j < 8; j++)
+                for(int k = 0; k < 8; k++)
+                    bin_input[i][j * 8 + k] = divided_input[i][j] >> k & 1;
+
+        //TODO: generate readable random key
+#pragma omp for
+        for(int i = 0; i < 64; i++)
+            key[i] = 1; //rand() & 1; dummy key
+            
         
-    
-    // encrypt all blocks 
-    setkey_r(key, &data);
-    for(int i = 0; i < 32; i++)
-        encrypt_r(bin_input[i], DEC_FLAG, &data);
+        // encrypt all blocks 
+        setkey_r(key, &data);
+#pragma omp for
+        for(int i = 0; i < 32; i++)
+            encrypt_r(bin_input[i], DEC_FLAG, &data);
 
-    // convert the bit arrays to readable form 
-    for(int i = 0; i < 32; i++)
-        for(int j = 0; j < 8; j++)
-        {
-            divided_input[i][j] = '\0';
-            for(int k = 0; k < 8; k++)
-                divided_input[i][j] |= bin_input[i][j * 8 + k] << k;
-        }
-    
+        // convert the bit arrays to readable form 
+#pragma omp for
+        for(int i = 0; i < 32; i++)
+            for(int j = 0; j < 8; j++)
+            {
+                divided_input[i][j] = '\0';
+                for(int k = 0; k < 8; k++)
+                    divided_input[i][j] |= bin_input[i][j * 8 + k] << k;
+            }
+    }
+
     // print encrypted/decrypted message
     for(int i = 0; i < 32; i++)
         print_characters(divided_input[i], 8);

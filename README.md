@@ -13,7 +13,7 @@ Command line tool in C (OpenMP) for Electronic Codebook block cipher using DES
   ```
 - Compile using gcc
   ```sh
-  $ gcc -lcrypt ecb-des.c -o ecb-des
+  $ gcc -lcrypt -fopenmp ecb-des.c -o ecb-des
   ```
 
 ### How to run
